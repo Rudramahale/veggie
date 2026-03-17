@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Search } from 'lucide-react';
 import SearchBar from '../SearchBar/SearchBar';
 import companyLogo from '../../assets/images/logo.jpeg';
+import partner1 from '../../assets/images/partner1.jpeg';
+import partner2 from '../../assets/images/partner2.jpeg';
+import partner3 from '../../assets/images/partner3.jpeg';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -11,6 +14,11 @@ const Navbar = () => {
       <div className="container navbar-inner">
         {/* Logo Section */}
         <Link to="/" className="brand-logo">
+          <div className="partner-logos">
+            <img src={partner1} alt="Partner 1" className="partner-img" />
+            <img src={partner2} alt="Partner 2" className="partner-img" />
+            <img src={partner3} alt="Partner 3" className="partner-img" />
+          </div>
           <img src={companyLogo} alt="Krishi Vikas Logo" className="logo-img" />
           <div className="brand-title">
             FARMER PRODUCER<br/>COMPANY

@@ -31,10 +31,25 @@
 }
 
 .logo-img {
-  height: 70px;
+  height: 90px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+}
+
+.partner-logos {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-right: var(--spacing-xs);
+  border-right: 2px solid var(--border-color);
+  padding-right: var(--spacing-md);
+}
+
+.partner-img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
 }
 
 .brand-title {
