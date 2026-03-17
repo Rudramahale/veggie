@@ -1,0 +1,8 @@
+.footer {
+  background-color: var(--bg-white);
+  border-top: 1px solid var(--border-color);
+  padding: var(--spacing-xl) 0;
+  margin-top: auto;
+  text-align: center;
+  color: var(--text-secondary);
+}

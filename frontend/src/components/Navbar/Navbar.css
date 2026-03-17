@@ -1,0 +1,133 @@
+.navbar {
+  background-color: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-inner {
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xl);
+}
+
+.brand-logo {
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.clone-tag {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.location-box {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  max-width: 250px;
+  cursor: pointer;
+}
+
+.location-icon {
+  color: var(--text-primary);
+}
+
+.location-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.location-text p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.search-section {
+  flex: 1;
+  max-width: 800px;
+}
+
+.actions-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.login-btn {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.login-btn:hover {
+  color: var(--primary-dark);
+}
+
+.cart-btn {
+  background-color: var(--secondary-color);
+  color: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.cart-btn:hover {
+  background-color: var(--secondary-dark);
+}
+
+.cart-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.cart-price {
+  font-size: 14px;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar-inner {
+    height: auto;
+    padding: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+  
+  .brand-logo h1 {
+    font-size: 24px;
+  }
+  
+  .search-section {
+    order: 3;
+    width: 100%;
+    margin-top: var(--spacing-xs);
+  }
+  
+  .actions-section {
+    gap: var(--spacing-md);
+  }
+  
+  .cart-btn {
+    padding: 8px 12px;
+  }
+}

@@ -1,0 +1,106 @@
+.checkout-page {
+  padding: var(--spacing-xl) 0;
+}
+
+.checkout-page h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+.checkout-step {
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.checkout-step.disable-step {
+  opacity: 0.6;
+  background-color: var(--bg-light);
+}
+
+.checkout-step h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.address-form input {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: inherit;
+}
+
+.address-form input:focus {
+  border-color: var(--primary-color);
+}
+
+.row-inputs {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.row-inputs input {
+  flex: 1;
+}
+
+.btn-save-address {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  margin-top: var(--spacing-sm);
+  align-self: flex-start;
+}
+
+.checkout-summary-section {
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  position: sticky;
+  top: 100px;
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--secondary-color);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: var(--spacing-md);
+}
+
+.place-order-btn.disabled {
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+}
