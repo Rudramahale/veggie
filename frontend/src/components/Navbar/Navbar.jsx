@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, MapPin, Search } from 'lucide-react';
+import { ShoppingCart, Search } from 'lucide-react';
 import SearchBar from '../SearchBar/SearchBar';
+import companyLogo from '../../assets/images/logo.jpeg';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -10,17 +11,11 @@ const Navbar = () => {
       <div className="container navbar-inner">
         {/* Logo Section */}
         <Link to="/" className="brand-logo">
-          <h1>Blinkit<span className="clone-tag">Clone</span></h1>
-        </Link>
-
-        {/* Location Section */}
-        <div className="location-box hide-on-mobile">
-          <MapPin size={24} className="location-icon" />
-          <div className="location-text">
-            <h4>Delivery in 10 minutes</h4>
-            <p className="text-truncate">Select your location to see availability</p>
+          <img src={companyLogo} alt="Krishi Vikas Logo" className="logo-img" />
+          <div className="brand-title">
+            FARMER PRODUCER<br/>COMPANY
           </div>
-        </div>
+        </Link>
 
         {/* Search Section */}
         <div className="search-section">
