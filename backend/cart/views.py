@@ -2,8 +2,9 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .models import Cart, CartItem, Product
+from .models import Cart, CartItem, Product, User
 from django.db import transaction
+from firebase_admin import auth as firebase_auth
 
 def get_or_create_cart(request):
     if not request.session.session_key:
@@ -12,8 +13,31 @@ def get_or_create_cart(request):
     # Store a dummy value in the session to ensure Django saves it and sends the session cookie
     request.session['has_cart'] = True
     
-    cart, created = Cart.objects.get_or_create(session_id=request.session.session_key)
-    return cart
+    session_key = request.session.session_key
+    user_id = request.session.get('user_id')
+    
+    if user_id:
+        user_cart = Cart.objects.filter(user_id=user_id).first()
+        if user_cart:
+            # User already has a cart. Remove any anonymous cart holding this session ID
+            Cart.objects.filter(session_id=session_key).exclude(id=user_cart.id).delete()
+            if user_cart.session_id != session_key:
+                user_cart.session_id = session_key
+                user_cart.save()
+            return user_cart
+        else:
+            # User doesn't have a cart. See if there's an anon cart to claim
+            anon_cart = Cart.objects.filter(session_id=session_key, user__isnull=True).first()
+            if anon_cart:
+                anon_cart.user_id = user_id
+                anon_cart.save()
+                return anon_cart
+            else:
+                cart = Cart.objects.create(user_id=user_id, session_id=session_key)
+                return cart
+    else:
+        cart, created = Cart.objects.get_or_create(session_id=session_key, user__isnull=True)
+        return cart
 
 def get_product_image(product):
     images = product.images.all()
@@ -121,6 +145,79 @@ def update_cart(request):
                 cart_item.save()
                 
         return Response({'message': f'Cart updated ({action})'})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return Response({'error': str(e)}, status=500)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def phone_login(request):
+    try:
+        id_token = request.data.get('idToken')
+        if not id_token:
+            return Response({'error': 'idToken is required'}, status=400)
+            
+        decoded_token = firebase_auth.verify_id_token(id_token, clock_skew_seconds=60)
+        phone = decoded_token.get('phone_number')
+        
+        if not phone:
+            return Response({'error': 'No phone number in token'}, status=400)
+            
+        try:
+            user = User.objects.get(phone=phone)
+            if not request.session.session_key:
+                request.session.create()
+            
+            request.session['has_cart'] = True
+            request.session['user_id'] = user.id
+            
+            cart = get_or_create_cart(request)
+                
+            return Response({'message': 'Login successful', 'user': {'name': user.name, 'phone': user.phone}})
+        except User.DoesNotExist:
+            return Response({'error': 'User not found, complete profile', 'status': 'needs_profile', 'phone': phone}, status=202)
+            
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return Response({'error': str(e)}, status=500)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+@transaction.atomic
+def complete_profile(request):
+    try:
+        id_token = request.data.get('idToken')
+        name = request.data.get('name')
+        email = request.data.get('email')
+        
+        if not all([id_token, name, email]):
+            return Response({'error': 'idToken, name, and email are required'}, status=400)
+            
+        decoded_token = firebase_auth.verify_id_token(id_token, clock_skew_seconds=60)
+        phone = decoded_token.get('phone_number')
+        
+        if User.objects.filter(phone=phone).exists():
+            return Response({'error': 'User already exists'}, status=400)
+            
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'Email already in use'}, status=400)
+            
+        # Passing a dummy password to satisfy potential 'NOT NULL' database constraints
+        user = User.objects.create(name=name, email=email, phone=phone, password="firebase_phone_auth")
+        
+        if not request.session.session_key:
+            request.session.create()
+        request.session['has_cart'] = True
+        request.session['user_id'] = user.id
+        
+        cart = get_or_create_cart(request)
+            
+        return Response({'message': 'Profile created successfully', 'user': {'name': user.name, 'phone': user.phone}}, status=201)
+        
     except Exception as e:
         import traceback
         traceback.print_exc()

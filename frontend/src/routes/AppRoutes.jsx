@@ -14,6 +14,7 @@ import Checkout from '../pages/Checkout/Checkout';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
+import CompleteProfile from '../pages/CompleteProfile/CompleteProfile';
 import Dashboard from '../pages/AdminDashboard/Dashboard';
 
 const AppRoutes = () => {
@@ -28,6 +29,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/complete-profile" element={<CompleteProfile />} />
       </Route>
       
       {/* Admin layout can be added later by wrapping Dashboard in AdminLayout */}
