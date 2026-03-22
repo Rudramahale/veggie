@@ -6,7 +6,7 @@ const Signup = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>Join BlinkitClone</h2>
+        <h2>Join Krishi Vikas</h2>
         <p className="auth-subtitle">Create an account to continue</p>
         
         <form className="auth-form" onSubmit={(e) => e.preventDefault()}>

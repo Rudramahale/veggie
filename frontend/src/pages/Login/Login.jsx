@@ -31,6 +31,12 @@ const Login = () => {
       return;
     }
     
+    // Default Schema Bypass for direct access
+    if (phone === '7020359284') {
+      setStep(2);
+      return;
+    }
+    
     setLoading(true);
     try {
       setupRecaptcha();
@@ -50,6 +56,19 @@ const Login = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otp.length < 6) return;
+    
+    // Default Schema Bypass for direct access
+    if (phone === '7020359284' && otp === '123456') {
+      login({
+        id: 'default-user-id',
+        name: 'Sanildefault',
+        phone: '7020359284',
+        email: 'sanil.landge07@gmail.com',
+        role: 'customer'
+      });
+      navigate('/');
+      return;
+    }
     
     setLoading(true);
     setError('');
@@ -86,7 +105,7 @@ const Login = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>India's last minute app</h2>
+        <h2>Welcome Back to Krishi Vikas</h2>
         <p className="auth-subtitle">Log in or Sign up</p>
         
         {error && <p className="error-message" style={{color:'red', fontSize:'12px', marginBottom:'10px'}}>{error}</p>}
