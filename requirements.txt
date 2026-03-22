@@ -11,3 +11,4 @@ whitenoise==6.6.0
 django-filter==23.3
 requests==2.31.0
 mysql-connector-python==8.0.33
+firebase-admin==7.3.0

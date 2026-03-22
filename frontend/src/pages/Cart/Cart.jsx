@@ -1,16 +1,21 @@
 import React from 'react';
-import { Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2, Info } from 'lucide-react';
+import { useCart } from '../../store/CartContext';
 import './Cart.css';
 
-const CART_ITEMS = [
-  { id: 1, name: 'Amul Taaza Toned Fresh Milk', weight: '500 ml', price: 27, quantity: 2, image: '/src/assets/images/products/shoes1.jpg' },
-  { id: 2, name: 'Britannia NutriChoice', weight: '1 kg', price: 150, quantity: 1, image: '/src/assets/images/products/tshirt1.jpg' },
-];
-
 const Cart = () => {
-  const itemTotal = CART_ITEMS.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const deliveryFee = 15;
-  const grandTotal = itemTotal + deliveryFee;
+  const { cart, updateQuantity } = useCart();
+  const items = cart.items || [];
+  const bill = cart.bill_details || {};
+
+  if (items.length === 0) {
+    return (
+      <div className="cart-page container empty-cart">
+        <h2>Your Cart is empty</h2>
+        <a href="/" className="continue-shopping">Start Shopping</a>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-page container">
@@ -18,28 +23,29 @@ const Cart = () => {
         
         {/* Cart Items Section */}
         <div className="cart-items-section">
-          <h2>My Cart ({CART_ITEMS.length} Items)</h2>
-          
           <div className="cart-items-list">
-            {CART_ITEMS.map(item => (
+            {items.map(item => (
               <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.name} className="cart-item-img" />
+                <div className="cart-item-img-wrapper">
+                  <img src={item.image} alt={item.name} className="cart-item-img" />
+                </div>
                 
                 <div className="cart-item-details">
-                  <h4>{item.name}</h4>
-                  <p>{item.weight}</p>
+                  <p className="item-name">{item.name}</p>
+                  <p className="item-weight">1 pc</p>
                   <span className="cart-item-price">₹{item.price}</span>
                 </div>
 
                 <div className="cart-item-actions">
-                  <div className="quantity-control">
-                    <button><Minus size={14} /></button>
-                    <span>{item.quantity}</span>
-                    <button><Plus size={14} /></button>
+                  <div className="cart-controls">
+                    <button className="qty-btn" onClick={() => updateQuantity(item.product_id, 'decrement')}>
+                      <Minus size={14} />
+                    </button>
+                    <span className="qty-display">{item.quantity}</span>
+                    <button className="qty-btn" onClick={() => updateQuantity(item.product_id, 'increment')}>
+                      <Plus size={14} />
+                    </button>
                   </div>
-                  <button className="remove-btn">
-                    <Trash2 size={18} />
-                  </button>
                 </div>
               </div>
             ))}
@@ -48,29 +54,52 @@ const Cart = () => {
 
         {/* Cart Summary Section */}
         <div className="cart-summary-section">
-          <h3>Bill Details</h3>
+          <h3>Bill details</h3>
           
           <div className="bill-row">
-            <span>Item Total</span>
-            <span>₹{itemTotal}</span>
+            <span>Items total</span>
+            <span>₹{bill.items_total}</span>
           </div>
           <div className="bill-row">
-            <span>Delivery Fee</span>
-            <span>₹{deliveryFee}</span>
+            <span>Delivery charge <Info size={12} className="info-icon" /></span>
+            <span>₹{bill.delivery_charge}</span>
           </div>
-          
-          <div className="bill-divider"></div>
+          <div className="bill-row">
+            <span>Handling charge <Info size={12} className="info-icon" /></span>
+            <span>₹{bill.handling_charge}</span>
+          </div>
+          {bill.small_cart_charge > 0 && (
+            <div className="bill-row">
+              <span>Small cart charge <Info size={12} className="info-icon" /></span>
+              <span>₹{bill.small_cart_charge}</span>
+            </div>
+          )}
           
           <div className="bill-row grand-total">
-            <span>To Pay</span>
-            <span>₹{grandTotal}</span>
+            <span>Grand total <Info size={12} className="info-icon" /></span>
+            <span>₹{bill.grand_total}</span>
           </div>
-
-          <a href="/checkout" className="checkout-btn">
-            Proceed to Checkout
-          </a>
         </div>
 
+        {/* Cancellation Policy */}
+        <div className="cancellation-policy">
+          <h4>Cancellation Policy</h4>
+          <p>Orders cannot be cancelled once packed for delivery. In case of unexpected delays, a refund will be provided, if applicable.</p>
+        </div>
+
+      </div>
+
+      {/* Fixed Bottom Bar */}
+      <div className="fixed-bottom-bar">
+        <div className="bottom-total-box">
+          <div className="total-left">
+            <span className="total-amount">₹{bill.grand_total}</span>
+            <span className="total-label">TOTAL</span>
+          </div>
+          <a href="/login" className="login-proceed-btn">
+            Login to Proceed <span className="arrow-right">›</span>
+          </a>
+        </div>
       </div>
     </div>
   );

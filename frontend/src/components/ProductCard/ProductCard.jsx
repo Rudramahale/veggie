@@ -1,8 +1,16 @@
 import React from 'react';
+import { useCart } from '../../store/CartContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { id, name, weight, price, originalPrice, image, discount } = product;
+  const { getItemQuantity, addToCart, updateQuantity } = useCart();
+
+  const quantity = getItemQuantity(id);
+
+  const handleAdd = () => addToCart(id);
+  const handleIncrement = () => updateQuantity(id, 'increment');
+  const handleDecrement = () => updateQuantity(id, 'decrement');
 
   return (
     <div className="product-card">
@@ -20,7 +28,15 @@ const ProductCard = ({ product }) => {
             <span className="current-price">₹{price}</span>
             {originalPrice && <span className="original-price">₹{originalPrice}</span>}
           </div>
-          <button className="add-to-cart-btn">ADD</button>
+          {quantity > 0 ? (
+            <div className="cart-controls">
+              <button className="qty-btn" onClick={handleDecrement}>-</button>
+              <span className="qty-display">{quantity}</span>
+              <button className="qty-btn" onClick={handleIncrement}>+</button>
+            </div>
+          ) : (
+            <button className="add-to-cart-btn" onClick={handleAdd}>ADD</button>
+          )}
         </div>
       </div>
     </div>

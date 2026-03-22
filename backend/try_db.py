@@ -13,11 +13,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 try:
     conn = mysql.connector.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME
+        host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASSWORD, database=DB_NAME
     )
 
     if conn.is_connected():
@@ -28,5 +24,5 @@ except Exception as e:
     print(e)
 
 finally:
-    if 'conn' in locals() and conn.is_connected():
+    if "conn" in locals() and conn.is_connected():
         conn.close()

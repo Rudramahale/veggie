@@ -133,3 +133,39 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #318616;
+  border-radius: var(--radius-lg);
+  color: white;
+  width: 80px;
+  height: 36px;
+  overflow: hidden;
+}
+
+.qty-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  width: 28px;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.qty-display {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+}

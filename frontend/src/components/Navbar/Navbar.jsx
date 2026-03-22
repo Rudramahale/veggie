@@ -6,9 +6,12 @@ import companyLogo from '../../assets/images/logo.jpeg';
 import partner1 from '../../assets/images/partner1.jpeg';
 import partner2 from '../../assets/images/partner2.jpeg';
 import partner3 from '../../assets/images/partner3.jpeg';
+import { useCart } from '../../store/CartContext';
 import './Navbar.css';
 
 const Navbar = () => {
+  const { cart } = useCart();
+
   return (
     <header className="navbar">
       <div className="container navbar-inner">
@@ -36,8 +39,12 @@ const Navbar = () => {
           <Link to="/cart" className="cart-btn">
             <ShoppingCart size={20} />
             <div className="cart-details">
-              <span className="cart-items">0 items</span>
-              <span className="cart-price">₹0</span>
+              <span className="cart-items">
+                {cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0} items
+              </span>
+              <span className="cart-price">
+                ₹{cart.bill_details ? cart.bill_details.items_total || 0 : 0}
+              </span>
             </div>
           </Link>
         </div>
